@@ -38,7 +38,7 @@ public class SkillServiceApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Skill java=new Skill(1,"java");
         Skill spring=new Skill(2,"spring");
-       
+
         //associateRepo.save(new Associate(1,"john","vv@g",9999));
         List<Skill> s= new ArrayList<>();
         s.add(java);
