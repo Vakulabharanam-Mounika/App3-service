@@ -7,16 +7,6 @@ import java.util.List;
 @Table(name="skill")
 public class Skill{
 
-    // define our fields
-
-    // define constructors
-
-    // define getter setters
-
-    // define tostring
-
-    // annotate fields
-
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="skill_id")
@@ -25,15 +15,14 @@ public class Skill{
     @Column(name="skill_name")
     private String skillName;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "associate_id")
+    @JoinColumn(name = "associateId")
     private Associate associate;
-
 
     public Associate getAssociate() {
         return associate;
     }
 
-    public void setAssociate(Associate associate) {
+    public void setAssociates(Associate associate) {
         this.associate = associate;
     }
 
@@ -41,9 +30,14 @@ public class Skill{
 
     }
 
-    public Skill(int skillId,String skillName) {
+    public Skill(String skillName) {
+        this.skillName = skillName;
+    }
+
+    public Skill(int skillId, String skillName,Associate associate) {
         this.skillId = skillId;
         this.skillName=skillName;
+        this.associate=associate;
     }
 
     public int getSkillId() {
@@ -62,7 +56,8 @@ public class Skill{
         this.skillName = skillName;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return (" "+ skillName) ;
+    }
 }

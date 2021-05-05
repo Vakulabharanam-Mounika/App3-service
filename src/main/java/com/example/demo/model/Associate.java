@@ -16,12 +16,12 @@ public class Associate {
     @Column(name="associate_email")
     private String email;
     @Column(name="mobile_number")
-    private int mobileNumber;
+    private long mobileNumber;
 
     @OneToMany(mappedBy = "associate", cascade = {
             CascadeType.ALL
     })
-
+    //@JoinColumn(name="skill_name")
 
     private List<Skill> skills;
     public List<Skill> getSkills() {
@@ -35,12 +35,28 @@ public class Associate {
     public Associate() {
     }
 
-    public Associate(int associateId, String associateName,String email, int mobileNumber) {
+    public Associate(int associateId, String associateName,String email, long mobileNumber) {
+
+        this.associateId = associateId;
+        this.associateName = associateName;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+
+    }
+    public Associate(String associateName,String email, long mobileNumber) {
+        this.associateName = associateName;
+        //this.associateId = associateId;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+
+    }
+
+    public Associate(int associateId, String associateName,String email, long mobileNumber,List<Skill> skills) {
         this.associateName = associateName;
         this.associateId = associateId;
         this.email = email;
         this.mobileNumber = mobileNumber;
-        //this.skills=skills;
+        this.skills=skills;
 
     }
 
@@ -68,16 +84,17 @@ public class Associate {
         this.email = email;
     }
 
-    public int getMobileNumber() {
+    public long getMobileNumber() {
         return mobileNumber;
     }
 
-    public void setMobileNumber(int mobileNumber) {
+    public void setMobileNumber(long mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return (" "+associateId);
+    }
 }
 

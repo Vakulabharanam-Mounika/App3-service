@@ -26,7 +26,8 @@
 
 
         <!-- Add hidden form field to handle update -->
-        <input type="hidden" th:field="*{associateId}" />
+        <input type="text" th:field="*{associateId}"
+               class="form-control mb-4 col-4" placeholder="Associate id">
 
         <input type="text" th:field="*{associateName}"
                class="form-control mb-4 col-4" placeholder="Associate name">
@@ -36,8 +37,6 @@
 
         <input type="text" th:field="*{mobileNumber}"
                class="form-control mb-4 col-4" placeholder="Mobilenumber">
-
-
 
 
         <button type="submit" class="btn btn-info col-2">Save</button>

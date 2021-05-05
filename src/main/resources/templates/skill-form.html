@@ -9,36 +9,26 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-    <title>Save Associate</title>
+    <title>Save Skill</title>
 </head>
 
 <body>
 
 <div class="container">
 
-    <h3>Associate Directory</h3>
+    <h3>Skill Directory</h3>
     <hr>
 
-    <p class="h4 mb-4">Save Associate</p>
+    <p class="h4 mb-4">Save Skill</p>
 
-    <form action="#" th:action="@{/associates/save}"
-          th:object="${associate}" method="POST">
-
+    <form action="#" th:action="@{/skills/save}"
+          th:object="${skill}" method="POST">
 
         <!-- Add hidden form field to handle update -->
-        <input type="hidden" th:field="*{associateId}" />
+        <input type="hidden" th:field="*{skillId}" />
 
-        <input type="text" th:field="*{associateName}"
-               class="form-control mb-4 col-4" placeholder="Associate name">
-
-        <input type="text" th:field="*{email}"
-               class="form-control mb-4 col-4" placeholder="Email">
-
-        <input type="text" th:field="*{mobileNumber}"
-               class="form-control mb-4 col-4" placeholder="Mobilenumber">
-
-
-
+        <input type="text" th:field="*{skillName}"
+               class="form-control mb-4 col-4" placeholder="Skill name">
 
         <button type="submit" class="btn btn-info col-2">Save</button>
 

@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Associate;
+import com.example.demo.model.Skill;
 import com.example.demo.repo.AssociateRepo;
+import com.example.demo.repo.SkillRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,21 +11,35 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AssociateServiceImpl implements AssociateService{
+public class AssociateServiceImpl implements AssociateService {
     private AssociateRepo associateRepo;
+    private SkillRepo skillRepo;
     @Autowired
-    public AssociateServiceImpl(AssociateRepo associateRepo) {
+    public AssociateServiceImpl(AssociateRepo associateRepo,SkillRepo skillRepo) {
+
         this.associateRepo = associateRepo;
+        this.skillRepo=skillRepo;
     }
 
     @Override
     public Associate createAssociate(Associate associate) {
+        Skill s=new Skill();
+
+        //associate.setSkills(associate.getSkills());
+        s.setAssociates(s.getAssociate());
+        skillRepo.save(s);
+
         return associateRepo.save(associate);
     }
 
     @Override
-    public List<Associate> displayAllAssociate() {
+    public List<Associate> getAllAssociate() {
         return associateRepo.findAll();
+
+    }
+    @Override
+    public List<Associate> findByKeyword(String keyword) {
+        return associateRepo.findByKeyword(keyword);
     }
 
     @Override
@@ -37,7 +53,7 @@ public class AssociateServiceImpl implements AssociateService{
             associate=a.get();
         }
         else {
-            // we didn't find the employee
+
             throw new RuntimeException("Did not find associate id - " + associateId);
         }
         return associate;
@@ -54,14 +70,9 @@ public class AssociateServiceImpl implements AssociateService{
     }
 
     @Override
-    public Associate findByMobileNumber(int mobileNumber) {
+    public Associate findByMobileNumber(long mobileNumber) {
         return associateRepo.findByMobileNumber(mobileNumber);
     }
-
-    /*@Override
-    public List<Associate> findBySkill(String skill) {
-        return associateRepo.findBySkill(skill);
-    }*/
 
     @Override
     public Associate deleteByAssociateId(int associateId) {

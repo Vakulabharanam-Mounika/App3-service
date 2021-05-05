@@ -1,7 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Associate;
+import com.example.demo.model.Skill;
+import com.example.demo.repo.AssociateRepo;
+import com.example.demo.repo.SkillRepo;
 import com.example.demo.service.AssociateService;
+import com.example.demo.service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,57 +20,93 @@ import java.util.List;
 public class AssociateController {
 
     private AssociateService associateService;
+    private SkillRepo skillRepo;
+    private AssociateRepo associateRepo;
+    private SkillService skillService;
     @Autowired
-    public AssociateController(AssociateService associateService) {
+    public AssociateController(AssociateService associateService, SkillRepo skillRepo,AssociateRepo associateRepo, SkillService skillService) {
         super();
         this.associateService = associateService;
+        this.skillRepo=skillRepo;
+        this.associateRepo=associateRepo;
+        this.skillService=skillService;
     }
 
     @GetMapping("/list")
-    public String getAssociates(Model model) {
-        List<Associate> list = associateService.displayAllAssociate();
-        model.addAttribute("associates", list);
+    public String getAssociates(Model model, String keyword)
+    {
+        List<Associate> list=associateService.getAllAssociate();
+
+        if(keyword!=null){
+            model.addAttribute("associates", associateService.findByKeyword(keyword));
+        }
+        else {
+            model.addAttribute("associates", list);
+
+        }
         return "list-associates";
     }
 
+    @GetMapping("/list/{associateId}")
+    public ResponseEntity<Associate> getByAssociateId(@PathVariable("associateId") int associateId) {
+
+       Associate a=associateService.findByAssociateId(associateId);
+        return ResponseEntity.ok(a);
+    }
+
+
     @GetMapping("/showFormForAdd")
     public String showFormForAdd(Model theModel) {
-        // create model attribute to bind form data
+
         Associate a = new Associate();
+        Skill theSkill=new Skill();
+
+        theModel.addAttribute("skills",theSkill);
         theModel.addAttribute("associate", a);
-        return "associate-form";
+        return "associate-form1";
     }
 
     @PostMapping("/save")
-    public String saveAssociate(@ModelAttribute("associate") Associate associate) {
-        // save the employee
+    public String saveAssociate(@ModelAttribute("associate") Associate associate, @ModelAttribute("skill") Skill theSkill) {
 
         associateService.createAssociate(associate);
-        // use a redirect to prevent duplicate submissions
+
+        skillRepo.save(theSkill);
         return "redirect:/associates/list";
     }
+
     @RequestMapping("/delete")
     public String deleteAssociateById(@RequestParam("associateId") int associateId, Model theModel) {
 
-        // get the employee from the service
-
         Associate a =associateService.deleteByAssociateId(associateId);
+        theModel.addAttribute("associates", a);
         return "redirect:/associates/list";
     }
     @GetMapping("/showFormForUpdate")
     public String showFormForUpdate(@RequestParam("associateId") int associateId,
                                     Model theModel) {
 
-        // get the employee from the service
-
         Associate associate=associateService.findByAssociateId(associateId);
 
-        // set employee as a model attribute to pre-populate the form
         theModel.addAttribute("associate", associate);
 
-        // send over to our form
         return "associate-form";
     }
+
+    @GetMapping("/showFormForAddSkill")
+    public String showFormForAddSkill(@RequestParam("associateId") int associateId,
+                                    Model theModel) {
+
+        Associate associate=associateService.findByAssociateId(associateId);
+        Skill b = new Skill();
+        theModel.addAttribute("skill", b);
+
+        theModel.addAttribute("associate", associate);
+
+        return "skill-form";
+    }
+
+
 
 
 }
